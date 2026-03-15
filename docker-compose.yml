@@ -1,0 +1,14 @@
+services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+       - "5433:5432" # HOST:CONTAINER
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
