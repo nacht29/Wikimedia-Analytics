@@ -1,0 +1,8 @@
+# files
+.env
+*.pyc
+__pycache__
+
+# folders
+*test*/
+*Archives*/
