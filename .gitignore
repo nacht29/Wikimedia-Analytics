@@ -206,5 +206,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# local
+# local files
 .env
+
+# Python
+myvenv/
