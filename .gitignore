@@ -208,6 +208,7 @@ __marimo__/
 
 # local files
 .env
+.vscode/
 
 # Python
 myvenv/
