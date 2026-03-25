@@ -1,6 +1,6 @@
-# uv pip install "requests>=2.20.1"
-# uv pip install "mwparserfromhell>=0.5.2"
-# uv pip install packaging
-# uv pip install importlib_metadata
-# uv pip install "wikitextparser>=0.47.5"
-# uv pip install pywikibot
+# syntax=docker/dockerfile:1.4
+FROM python:3.12-slim
+
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
