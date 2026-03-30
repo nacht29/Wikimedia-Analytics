@@ -1,0 +1,102 @@
+[
+  {
+    "type": "message",
+    "origin": "https://stream.wikimedia.org",
+    "last_event_id": [
+      {
+        "offset": -1,
+        "partition": 0,
+        "topic": "eqiad.mediawiki.recentchange"
+      },
+      {
+        "partition": 0,
+        "timestamp": 1774263574083,
+        "topic": "codfw.mediawiki.recentchange"
+      }
+    ],
+    "data": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "bot": true,
+      "comment": "/* wbeditentity-statements-multiple-properties-update:0||6 */ automatically adding [[Commons:Structured data|structured data]] based on file information",
+      "id": 3243166104,
+      "length": {
+        "new": 11854,
+        "old": 9476
+      },
+      "meta": {
+        "domain": "commons.wikimedia.org",
+        "dt": "2026-03-23T10:59:34.082Z",
+        "id": "9ca7b1ce-d34e-4425-96b6-b9c62ab77a31",
+        "offset": 2078571427,
+        "partition": 0,
+        "request_id": "995a13b5-40b0-4518-a4f8-3b0a18862f9a",
+        "stream": "mediawiki.recentchange",
+        "topic": "codfw.mediawiki.recentchange",
+        "uri": "https://commons.wikimedia.org/wiki/File:ISS047-E-11192_-_View_of_Earth.jpg"
+      },
+      "minor": false,
+      "namespace": 6,
+      "notify_url": "https://commons.wikimedia.org/w/index.php?diff=1185581773&oldid=761364466&rcid=3243166104",
+      "parsedcomment": "‎<span dir=\"auto\"><span class=\"autocomment\">Changed statements for 6 properties: </span></span> automatically adding <a href=\"/wiki/Commons:Structured_data\" title=\"Commons:Structured data\">structured data</a> based on file information",
+      "patrolled": true,
+      "revision": {
+        "new": 1185581773,
+        "old": 761364466
+      },
+      "server_name": "commons.wikimedia.org",
+      "server_script_path": "/w",
+      "server_url": "https://commons.wikimedia.org",
+      "timestamp": 1774263573,
+      "title": "File:ISS047-E-11192 - View of Earth.jpg",
+      "title_url": "https://commons.wikimedia.org/wiki/File:ISS047-E-11192_-_View_of_Earth.jpg",
+      "type": "edit",
+      "user": "SchlurcherBot",
+      "wiki": "commonswiki"
+    }
+  },
+  {
+    "type": "message",
+    "origin": "https://stream.wikimedia.org",
+    "last_event_id": [
+      {
+        "offset": -1,
+        "partition": 0,
+        "topic": "eqiad.mediawiki.recentchange"
+      },
+      {
+        "partition": 0,
+        "timestamp": 1774263574086,
+        "topic": "codfw.mediawiki.recentchange"
+      }
+    ],
+    "data": {
+      "$schema": "/mediawiki/recentchange/1.0.0",
+      "bot": false,
+      "comment": "[[:File:Total oda for infrastructure by recipient, North America, 2009.svg]] added to category",
+      "id": 3243166106,
+      "meta": {
+        "domain": "commons.wikimedia.org",
+        "dt": "2026-03-23T10:59:34.085Z",
+        "id": "bf2feba1-06dd-4749-8bc0-926495db243b",
+        "offset": 2078571428,
+        "partition": 0,
+        "request_id": "c1f581d3-4d81-479a-b1e2-fb8c74d785ca",
+        "stream": "mediawiki.recentchange",
+        "topic": "codfw.mediawiki.recentchange",
+        "uri": "https://commons.wikimedia.org/wiki/Category:CC-BY-4.0"
+      },
+      "namespace": 14,
+      "notify_url": "https://commons.wikimedia.org/w/index.php?diff=1185581771&oldid=0&rcid=3243166106",
+      "parsedcomment": "<a href=\"/wiki/File:Total_oda_for_infrastructure_by_recipient,_North_America,_2009.svg\" title=\"File:Total oda for infrastructure by recipient, North America, 2009.svg\">File:Total oda for infrastructure by recipient, North America, 2009.svg</a> added to category",
+      "server_name": "commons.wikimedia.org",
+      "server_script_path": "/w",
+      "server_url": "https://commons.wikimedia.org",
+      "timestamp": 1774263572,
+      "title": "Category:CC-BY-4.0",
+      "title_url": "https://commons.wikimedia.org/wiki/Category:CC-BY-4.0",
+      "type": "categorize",
+      "user": "Doc James",
+      "wiki": "commonswiki"
+    }
+  }
+]
