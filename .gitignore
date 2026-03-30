@@ -212,3 +212,6 @@ __marimo__/
 
 # Python
 myvenv/
+
+# Codex
+.codex
