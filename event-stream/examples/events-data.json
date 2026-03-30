@@ -1,15 +1,15 @@
 {
-  "$schema": "/mediawiki/recentchange/1.0.0",
+  "$schema": "/mediawiki/recentchange/1.0.0", // A URI identifying the JSONSchema for this event. This should match an schema's $id in a schema repository. E.g. /schema/title/1.0.0
   "bot": false,
-  "comment": "new cat",
-  "id": 3243157787,
+  "comment": "new cat", // recentchange comment
+  "id": 3243157787, // recentchange event id, raw nullable but make not nullable (Row ID)
   "length": {
     "new": 41
   },
   "meta": {
     "domain": "commons.wikimedia.org",
     "dt": "2026-03-23T10:53:34.036Z",
-    "id": "48904236-2adb-4dab-92be-bb28976156a4",
+    "id": "48904236-2adb-4dab-92be-bb28976156a4", // Unique ID of this event, use as potential PK
     "offset": 2078557728,
     "partition": 0,
     "request_id": "2ede8797-34ca-4770-a023-188e27752c02",
