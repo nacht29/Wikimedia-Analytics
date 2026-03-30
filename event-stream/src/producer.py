@@ -19,7 +19,7 @@ shutdown = False
 def handle_shutdown(signum, frame):
 	global shutdown
 	shutdown = True
-	print(f"{datetime.datetime.now()}	|	Shutdown requested.")
+	print(f"{datetime.datetime.now()}	|	Shutdown requested.", flush = True)
 
 signal.signal(signal.SIGINT, handle_shutdown)
 signal.signal(signal.SIGTERM, handle_shutdown)
@@ -34,7 +34,7 @@ config = {
 producer = Producer(config)
 try:
 	with EventSource(url=EVENTSTREAM_URL, headers=EVENTSTREAM_HEADER) as stream:
-		print(f"{datetime.datetime.now()}	|	SSE Started")
+		print(f"{datetime.datetime.now()}	|	SSE Started", flush = True)
 		for event in stream:
 			if shutdown == True:
 				break
@@ -57,14 +57,14 @@ try:
 				# key = key,
 				value=value
 			)
-			print(f"{datetime.datetime.now()}	|	Loaded 1 message to {KAFKA_TOPIC}")
+			print(f"{datetime.datetime.now()}	|	Loaded 1 message to {KAFKA_TOPIC}", flush = True)
 			producer.poll(0) # drain queue amd execute callback - check for events but don't block; process completed deliveries and return instantly
 except (KeyboardInterrupt, RuntimeError, TypeError):
 	pass
 finally:
-	print(f"{datetime.datetime.now()}	|	Shutdown in progress. Flushing messages...")
+	print(f"{datetime.datetime.now()}	|	Shutdown in progress. Flushing messages...", flush = True)
 	producer.flush() # flush producer before closing - Kafa batches message before sending
-	print(f"{datetime.datetime.now()}	|	Shutdown complete.")
+	print(f"{datetime.datetime.now()}	|	Shutdown complete.", flush = True)
 
 '''
 from pywikibot.comms.eventstreams import EventStreams

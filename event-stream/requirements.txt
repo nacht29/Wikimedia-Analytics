@@ -1,8 +1,7 @@
-"requests>=2.20.1"
-"mwparserfromhell>=0.5.2"
+requests>=2.20.1
+mwparserfromhell>=0.5.2
 packaging
 importlib_metadata
-"wikitextparser>=0.47.5"
-pywikibot
+wikitextparser>=0.47.5
 confluent-kafka
-msgpack
+requests_sse

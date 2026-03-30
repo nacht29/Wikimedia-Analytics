@@ -45,6 +45,11 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    
+  python-sse:
+    build:
+      context: ./event-stream
+      dockerfile: Dockerfile
 
 volumes:
   postgres_data:
