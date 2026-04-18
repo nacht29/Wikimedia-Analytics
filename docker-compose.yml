@@ -14,8 +14,8 @@ services:
     image: apache/kafka
     restart: always
     ports:
-      - "29092:29092"
-      - "9093:9093"
+      - "29092:29092" # localhost port
+      - "9093:9093" # KRaft port
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
@@ -44,6 +44,8 @@ services:
       - "8081:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local
+      # port to communicate with Kafka server container (kafka)
+      # no need to define as a port since this is for container-container comm over Docker network, port definition is only needed for Docker host
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     
   python-sse:
