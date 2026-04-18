@@ -1,4 +1,5 @@
 import json
+import os
 import socket
 from requests_sse import EventSource
 from confluent_kafka import Producer
@@ -6,17 +7,17 @@ import datetime
 import signal
 
 # Kafka broker
-BOOTSTRAP_SERVERS = "localhost:29092"
+BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092")
 
 # EventStream
 EVENTSTREAM_URL = 'https://stream.wikimedia.org/v2/stream/recentchange'
 EVENTSTREAM_HEADER = {"User-Agent": "Wikimedia-Analytics/0.1 nacht29.study@gmail.com"}
-KAFKA_TOPIC = "wikimedia.test_recentchange.raw"
+KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "wikimedia.recentchange.raw")
 
 # shutdown handler
 shutdown = False
 
-def handle_shutdown(signum, frame):
+def handle_shutdown(signum:int, frame):
 	global shutdown
 	shutdown = True
 	print(f"{datetime.datetime.now()}	|	Shutdown requested.", flush = True)
@@ -32,38 +33,59 @@ config = {
 
 # create Kafka producer
 producer = Producer(config)
+
+def delivery_report(error, message):
+	if error:
+		error_code = error.code() if hasattr(error, "code") else None
+		error_name = error.name() if hasattr(error, "name") else None
+		print(
+			f"{datetime.datetime.now()}	|	Failed to deliver message to {message.topic()}: "
+			f"code={error_code} name={error_name} detail={error}",
+			flush=True
+		)
+	else:
+		print(
+			f"{datetime.datetime.now()}	|	Loaded 1 message to {message.topic()} "
+			f"partition={message.partition()} offset={message.offset()}",
+			flush=True
+		)
+
 try:
 	with EventSource(url=EVENTSTREAM_URL, headers=EVENTSTREAM_HEADER) as stream:
 		print(f"{datetime.datetime.now()}	|	SSE Started", flush = True)
 		for event in stream:
 			if shutdown == True:
 				break
-			if event.type == 'message':
-				try:
-					change = json.loads(event.data)
-				except ValueError as error:
-					print(
-						f"Failed to load data: {EVENTSTREAM_URL}"
-						f"Error: {error}"
-					)
-				else:
-					if change['meta']['domain'] == 'canary':
-						continue
+			if event.type != 'message':
+				continue
+			try:
+				change = json.loads(event.data)
+			except ValueError as error:
+				print(
+					f"Failed to load data: {EVENTSTREAM_URL}"
+					f"Error: {error}",
+					flush=True
+				)
+				continue
+			if change['meta']['domain'] == 'canary':
+				continue
 
 			# create a broker instance and write to topic
-			value = json.dumps(change, indent=4)
+			value = json.dumps(change)
 			producer.produce( # queue message
 				topic=KAFKA_TOPIC,
 				# key = key,
-				value=value
+				value=value,
+				callback=delivery_report
 			)
-			print(f"{datetime.datetime.now()}	|	Loaded 1 message to {KAFKA_TOPIC}", flush = True)
-			producer.poll(0) # drain queue amd execute callback - check for events but don't block; process completed deliveries and return instantly
+			producer.poll(0) # checks Kafka producer event, drains event queue and execute callback based on the message received upon wrtiting to Kafka
 except (KeyboardInterrupt, RuntimeError, TypeError):
 	pass
 finally:
 	print(f"{datetime.datetime.now()}	|	Shutdown in progress. Flushing messages...", flush = True)
-	producer.flush() # flush producer before closing - Kafa batches message before sending
+	remaining_messages = producer.flush() # flush producer before closing - Kafa batches message before sending and rerturn numbers of messages unflushed
+	if remaining_messages: # if there are messages unflushed - return value from flush()
+		print(f"{datetime.datetime.now()}	|	Failed to flush {remaining_messages} message(s).", flush = True)
 	print(f"{datetime.datetime.now()}	|	Shutdown complete.", flush = True)
 
 '''
