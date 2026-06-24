@@ -1,0 +1,161 @@
+import json
+import os
+import socket
+from requests_sse import EventSource
+from confluent_kafka import Producer
+import datetime
+import signal
+import time
+import traceback
+
+# Kafka broker
+BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092")
+
+# EventStream
+EVENTSTREAM_URL = 'https://stream.wikimedia.org/v2/stream/recentchange'
+EVENTSTREAM_HEADER = {"User-Agent": "Wikimedia-Analytics/0.1 nacht29.study@gmail.com"}
+KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "wikimedia.recentchange.raw")
+
+# Retries
+FAILED_RETRY = int(os.getenv("FAILED_RETRY", "5"))
+RETRY_WAIT = float(os.getenv("RETRY_WAIT", "1"))
+MAX_RETRY_WAIT = float(os.getenv("MAX_RETRY_WAIT", "30"))
+EVENTSTREAM_TIMEOUT = float(os.getenv("EVENTSTREAM_TIMEOUT", "15"))
+EVENTSTREAM_RETRY_WAIT = float(os.getenv("EVENTSTREAM_RETRY_WAIT", "1"))
+EVENTSTREAM_CONNECT_RETRY = int(os.getenv("EVENTSTREAM_CONNECT_RETRY", "0"))
+KAFKA_FLUSH_TIMEOUT = float(os.getenv("KAFKA_FLUSH_TIMEOUT", "10"))
+
+# shutdown handler
+shutdown = False
+current_stream = None
+
+def handle_shutdown(signum:int, frame):
+	global shutdown, current_stream
+	shutdown = True
+	print(f"{datetime.datetime.now()}\t|\tShutdown requested.", flush = True)
+	if current_stream:
+		current_stream.close()
+
+signal.signal(signal.SIGINT, handle_shutdown)
+signal.signal(signal.SIGTERM, handle_shutdown)
+
+def delivery_report(error, message):
+	if error:
+		error_code = error.code() if hasattr(error, "code") else None
+		error_name = error.name() if hasattr(error, "name") else None
+		print(
+			f"{datetime.datetime.now()}\t|\tFailed to deliver message to {message.topic()}: "
+			f"code={error_code} name={error_name} detail={error}",
+			flush=True
+		)
+	else:
+		print(
+			f"{datetime.datetime.now()}\t|\tLoaded 1 message to {message.topic()} "
+			f"partition={message.partition()} offset={message.offset()}",
+			flush=True
+		)
+
+def log(msg:str):
+	msg = msg.split('\n')
+	for line in msg:
+		print(f"{datetime.datetime.now()}\t|\t{line}", flush=True)
+
+def create_producer() -> Producer:
+	# Kafka bootstrap server config
+	config = {
+		"bootstrap.servers": BOOTSTRAP_SERVERS,
+		"client.id": socket.gethostname(),
+		"acks": "all",
+		"enable.idempotence": True,
+		"retries": 5,
+		"retry.backoff.ms": 1000,
+		"reconnect.backoff.max.ms": 10000,
+		"request.timeout.ms": 15000,
+		"socket.timeout.ms": 15000,
+		"message.timeout.ms": 30000
+	}
+	return Producer(config) # create Kafka producer
+
+def kafka_produce(producer:Producer):
+	global shutdown, current_stream
+
+	try:
+		with EventSource(
+			url=EVENTSTREAM_URL,
+			headers=EVENTSTREAM_HEADER,
+			timeout=EVENTSTREAM_TIMEOUT,
+			reconnection_time=datetime.timedelta(seconds=EVENTSTREAM_RETRY_WAIT),
+			max_connect_retry=EVENTSTREAM_CONNECT_RETRY
+		) as stream:
+			current_stream = stream # used close EventSource stream upon requested shutdown
+			print(f"{datetime.datetime.now()}\t|\tSSE Started", flush = True)
+			for event in stream:
+				if shutdown:
+					break
+				if event.type != 'message':
+					continue
+				try:
+					change = json.loads(event.data)
+				except json.JSONDecodeError as error:
+					print(
+						f"{datetime.datetime.now()}\t|\tFailed to load data: {EVENTSTREAM_URL}"
+						f"{datetime.datetime.now()}\t|\tError: {error}",
+						flush=True
+					)
+					continue
+				if change['meta']['domain'] == 'canary':
+					continue
+
+				# create a broker instance and write to topic
+				value = json.dumps(change)
+				producer.produce( # queue message
+					topic=KAFKA_TOPIC,
+					# key = key,
+					value=value,
+					callback=delivery_report
+				)
+				producer.poll(0) # checks Kafka producer event, drains event queue and execute callback based on the message received upon wrtiting to Kafka
+	finally:
+		current_stream = None
+		print(f"{datetime.datetime.now()}\t|\tFlushing messages...", flush = True)
+		remaining_messages = producer.flush(KAFKA_FLUSH_TIMEOUT) # flush producer before closing - Kafa batches message before sending and rerturn numbers of messages unflushed
+		if remaining_messages: # if there are messages unflushed - return value from flush()
+			print(f"{datetime.datetime.now()}\t|\tFailed to flush {remaining_messages} message(s).", flush = True)
+		print(f"{datetime.datetime.now()}\t|\tFlush complete.", flush = True)
+	
+def main():
+	retry = 0
+	wait = RETRY_WAIT
+
+	def handle_retry(err_msg:str, traceback_msg:str):
+		nonlocal retry, wait
+		retry += 1
+		wait = min(wait * 2, MAX_RETRY_WAIT)
+		log(err_msg)
+		log(traceback_msg)
+		if retry < FAILED_RETRY:
+			time.sleep(wait)
+
+	while not shutdown and retry < FAILED_RETRY:
+		try:
+			producer = create_producer()
+		except Exception:
+			handle_retry(
+				err_msg="Failed to start Kafka producer.",
+				traceback_msg=traceback.format_exc()
+			)
+			continue
+
+		try:
+			kafka_produce(producer)
+		except Exception:
+			if shutdown:
+				break
+			handle_retry(
+				err_msg="Failed to start SSE stream.",
+				traceback_msg=traceback.format_exc()
+			)
+			continue
+
+if __name__ == '__main__':
+	main()

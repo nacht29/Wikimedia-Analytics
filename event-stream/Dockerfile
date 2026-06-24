@@ -11,4 +11,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY src ./src
-CMD ["python", "src/producer.py"]
+CMD ["python", "src/producer_prod.py"]

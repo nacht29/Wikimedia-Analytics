@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres
-    restart: always
+    # restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,7 +12,7 @@ services:
 
   kafka:
     image: apache/kafka
-    restart: always
+    # restart: always
     ports:
       - "29092:29092" # localhost port
       - "9093:9093" # KRaft port
@@ -36,7 +36,7 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui
-    restart: always
+    # restart: always
     container_name: kafka_ui
     depends_on:
       - kafka
@@ -52,6 +52,7 @@ services:
     build:
       context: ./event-stream
       dockerfile: Dockerfile
+    stop_grace_period: 30s
     depends_on:
       - kafka
     environment:
