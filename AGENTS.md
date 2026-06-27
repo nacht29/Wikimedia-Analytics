@@ -30,8 +30,13 @@ The repository uses short Conventional Commit-style prefixes, especially `feat:`
 
 Keep secrets and machine-specific values in `.env`; do not hard-code credentials in Python, SQL, or Compose files. When adding services, prefer Docker network hostnames such as `kafka:9092` for container-to-container traffic and reserve `localhost` addresses for host access.
 
+## Project Context
+
+Project contexts, notes and updates can be cross-referenced here: [Obsidian Vault note](https://github.com/nacht29/Obsidian/blob/main/Projects/Wikimedia-Analytics.md)
+
 ## Codex Session Logs
 
+- [2026-06-24 — RecentChange Backfill Recovery Plan](codex-sessions/2026-06-24-recentchange-backfill-recovery-plan.md)
 - [2026-06-24 — Docker SSE Shutdown Hang](codex-sessions/2026-06-24-docker-sse-shutdown-hang.md)
 - [2026-06-24 — Producer Network Drop Retry Fix](codex-sessions/2026-06-24-producer-network-drop-retry-fix.md)
 - [2026-06-18 — Project Setup Catch-Up](codex-sessions/2026-06-18-project-setup-catch-up.md)
