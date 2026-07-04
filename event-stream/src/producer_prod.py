@@ -14,7 +14,8 @@ BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092")
 # EventStream
 EVENTSTREAM_URL = 'https://stream.wikimedia.org/v2/stream/recentchange'
 EVENTSTREAM_HEADER = {"User-Agent": "Wikimedia-Analytics/0.1 nacht29.study@gmail.com"}
-KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "wikimedia.recentchange.raw")
+KAFKA_STREAM = os.getenv("KAFKA_STREAM", "wikimedia.recentchange.raw")
+KAFKA_BACKFILL = os.getenv("KAFKA_BACKFILL", "wikimedia.recentchange.backfill")
 
 # Retries
 FAILED_RETRY = int(os.getenv("FAILED_RETRY", "5"))
@@ -22,7 +23,7 @@ RETRY_WAIT = float(os.getenv("RETRY_WAIT", "1"))
 MAX_RETRY_WAIT = float(os.getenv("MAX_RETRY_WAIT", "30"))
 EVENTSTREAM_TIMEOUT = float(os.getenv("EVENTSTREAM_TIMEOUT", "15"))
 EVENTSTREAM_RETRY_WAIT = float(os.getenv("EVENTSTREAM_RETRY_WAIT", "1"))
-EVENTSTREAM_CONNECT_RETRY = int(os.getenv("EVENTSTREAM_CONNECT_RETRY", "0"))
+EVENTSTREAM_CONNECT_RETRY = int(os.getenv("EVENTSTREAM_CONNECT_RETRY", "1"))
 KAFKA_FLUSH_TIMEOUT = float(os.getenv("KAFKA_FLUSH_TIMEOUT", "10"))
 
 # shutdown handler
@@ -109,7 +110,7 @@ def kafka_produce(producer:Producer):
 				# create a broker instance and write to topic
 				value = json.dumps(change)
 				producer.produce( # queue message
-					topic=KAFKA_TOPIC,
+					topic=KAFKA_STREAM,
 					# key = key,
 					value=value,
 					callback=delivery_report

@@ -9,7 +9,7 @@
   "meta": {
     "domain": "commons.wikimedia.org",
     "dt": "2026-03-23T10:53:34.036Z",
-    "id": "48904236-2adb-4dab-92be-bb28976156a4", // Unique ID of this event, use as potential PK
+    "id": "48904236-2adb-4dab-92be-bb28976156a4",
     "offset": 2078557728,
     "partition": 0,
     "request_id": "2ede8797-34ca-4770-a023-188e27752c02",
