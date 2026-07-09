@@ -1,0 +1,97 @@
+{
+  "event-stream/examples/events-data.json": {
+    "mtime": 1774891990.968234,
+    "ast_hash": "ccae48eb89604d06e81b5002153f8885",
+    "semantic_hash": "ccae48eb89604d06e81b5002153f8885"
+  },
+  "event-stream/examples/events.json": {
+    "mtime": 1774891990.9795732,
+    "ast_hash": "51de692d8f3126fd53a7f5ce053400bc",
+    "semantic_hash": "51de692d8f3126fd53a7f5ce053400bc"
+  },
+  "event-stream/src/producer.py": {
+    "mtime": 1782244944.7140477,
+    "ast_hash": "8998762e14aad05cb2ea57cb3bbc135d",
+    "semantic_hash": "8998762e14aad05cb2ea57cb3bbc135d"
+  },
+  "event-stream/src/producer_prod.py": {
+    "mtime": 1782741589.947308,
+    "ast_hash": "1d442f33e6102fcdb3ca5decfc286c82",
+    "semantic_hash": "1d442f33e6102fcdb3ca5decfc286c82"
+  },
+  "kafka/commands.sh": {
+    "mtime": 1776346674.323415,
+    "ast_hash": "cb6c91865c0ea663585d05892d736d9d",
+    "semantic_hash": "cb6c91865c0ea663585d05892d736d9d"
+  },
+  "kafka/debug.sh": {
+    "mtime": 1774891991.0210764,
+    "ast_hash": "5542d85de0cee4e2d7627f5cc89a35c9",
+    "semantic_hash": "5542d85de0cee4e2d7627f5cc89a35c9"
+  },
+  "postgresql/recentchange.sql": {
+    "mtime": 1774891991.0570564,
+    "ast_hash": "bc5c119e4409ddf59b5a4595e3455815",
+    "semantic_hash": "bc5c119e4409ddf59b5a4595e3455815"
+  },
+  "postgresql/test-script.sql": {
+    "mtime": 1774891991.073038,
+    "ast_hash": "e72003623f5d892c7e8bed2d741c8405",
+    "semantic_hash": "e72003623f5d892c7e8bed2d741c8405"
+  },
+  "CLAUDE.md": {
+    "mtime": 1783014299.1085303,
+    "ast_hash": "44dca9aede0d5d212cd9fe6bb7773f55",
+    "semantic_hash": "44dca9aede0d5d212cd9fe6bb7773f55"
+  },
+  "README.md": {
+    "mtime": 1773245796.7622736,
+    "ast_hash": "d6f6c6b259398624ab9ea66ef99881cc",
+    "semantic_hash": "d6f6c6b259398624ab9ea66ef99881cc"
+  },
+  "claude-sessions/2026-06-30-sse-retry-recovery-backfill-design.md": {
+    "mtime": 1782755081.5273418,
+    "ast_hash": "d5a845c0d46d9058ae48526f6082cbec",
+    "semantic_hash": "d5a845c0d46d9058ae48526f6082cbec"
+  },
+  "docker-compose.yml": {
+    "mtime": 1782311741.6005151,
+    "ast_hash": "563c2e82aaa51c478f85106fc513beb2",
+    "semantic_hash": "563c2e82aaa51c478f85106fc513beb2"
+  },
+  "docs/Execution_Plan.md": {
+    "mtime": 1773246189.48374,
+    "ast_hash": "a4e3a2fec313cdae59738ea2bca66070",
+    "semantic_hash": "a4e3a2fec313cdae59738ea2bca66070"
+  },
+  "docs/Execution_Plan_2.md": {
+    "mtime": 1773298900.2015967,
+    "ast_hash": "49b5a4c3c32ea2680ea44113bb0c4fd9",
+    "semantic_hash": "49b5a4c3c32ea2680ea44113bb0c4fd9"
+  },
+  "docs/Execution_Plan_3.md": {
+    "mtime": 1774891990.9074028,
+    "ast_hash": "c71af3d2d202a5da59f45fb5558b4636",
+    "semantic_hash": "c71af3d2d202a5da59f45fb5558b4636"
+  },
+  "docs/Kafka.md": {
+    "mtime": 1781972544.8277142,
+    "ast_hash": "b1dbf7b3e586de1975afb07e47dc7817",
+    "semantic_hash": "b1dbf7b3e586de1975afb07e47dc7817"
+  },
+  "event-stream/examples/events-data-dict.yml": {
+    "mtime": 1774891990.9333923,
+    "ast_hash": "400db2ba112611551c412676ce4f5ad5",
+    "semantic_hash": "400db2ba112611551c412676ce4f5ad5"
+  },
+  "event-stream/requirements.txt": {
+    "mtime": 1774891990.9887455,
+    "ast_hash": "8cd29e29bdb87d3bc98adc8d98bd6890",
+    "semantic_hash": "8cd29e29bdb87d3bc98adc8d98bd6890"
+  },
+  "kafka/error-fix.md": {
+    "mtime": 1774891991.0446248,
+    "ast_hash": "8dc0a9752012967252892acaced6aa35",
+    "semantic_hash": "8dc0a9752012967252892acaced6aa35"
+  }
+}
